@@ -5,6 +5,7 @@ yarn.lock
 
 # Environment variables
 .env
+.venv
 .env.local
 .env.*.local
 
@@ -36,3 +37,10 @@ tmp/
 temp/
 
 experiments.ipynb
+
+database/
+experiments/
+
+__pycache__/
+
+.gitignore
