@@ -29,7 +29,7 @@ def extract_job_desc_metadata(jd: str):
         skills_required: list[str]
         required_experience: float
 
-
+    
     response = chat(
         model='tinyllama:latest',
         messages=[{'role': 'user', 

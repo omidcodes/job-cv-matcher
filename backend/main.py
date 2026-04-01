@@ -37,23 +37,18 @@ student_collection = chroma_client.create_collection(
     embedding_function=None
 )
 
-async def retry_async_function(call_async_func, *args, **kwargs):
-    wait_time = 2
-    attempts = 3
+async def retry_async_function(func, *args, timer=1, attempts=3, **kwargs):
     for attempt in range(attempts):
-        start_time = time.perf_counter()
+        print('loop')
         try:
-            # print('in try...')
-            return await asyncio.wait_for(call_async_func(*args, **kwargs), timeout=wait_time)
-        
-        except asyncio.TimeoutError as e:
-            print(f'attempt {attempt + 1} failed')
-            end_time = time.perf_counter()
-            print(f"time elapsed: {end_time - start_time}", end='\n')
-            if attempt == attempts:
-                # raise an error for the outer function to catch
-                raise e
-            wait_time *= 2
+            return await asyncio.wait_for(func(*args, **kwargs), timeout=timer)
+        except:
+            print('failed')
+            print(f'attempt: {attempt + 1} with timer {timer}')
+            print("*"*10)
+            timer *= 2
+    raise asyncio.TimeoutError()
+
 
 def extract_text_from_pdf(file_bytes: bytes) -> str:
     pdf_file = pymupdf.open(stream=file_bytes, filetype="pdf")
@@ -138,8 +133,8 @@ async def upload_files(files: list[UploadFile] = File(...)):
                 collection = chroma_client.get_collection('students_collection')
                 try:
                     # result = await asyncio.wait_for(store_cv_in_db(collection, cv_str), timeout=timeout_limit)
-                    await asyncio.wait_for(store_cv_in_db(collection, cv_str), timeout=timeout_limit)
-                    # await retry_async_function(lambda: store_cv_in_db(collection, cv_str))
+                    # await asyncio.wait_for(store_cv_in_db(collection, cv_str), timeout=timeout_limit)
+                    await retry_async_function(lambda: store_cv_in_db(collection, cv_str), timer=2, attempts=3)
                 except asyncio.TimeoutError as e:
                     results.append({
                         'filename': filename,

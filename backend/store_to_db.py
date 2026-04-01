@@ -56,7 +56,7 @@ async def store_cv_in_db(student_collection, CV_str):
 
     # breaking up CV into chunks of size 300
     chunks_list = clean_text_lower.split(' ')
-    each_chunk_size = 300
+    each_chunk_size = 50
     documents_list = [' '.join(chunks_list[i:i+each_chunk_size]) for i in range(0, len(chunks_list), each_chunk_size)]
 
     # Extracting metadata from the total clean text
