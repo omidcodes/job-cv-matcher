@@ -44,3 +44,6 @@ experiments/
 __pycache__/
 
 .gitignore
+__pycache__/
+
+experiments.ipynb
