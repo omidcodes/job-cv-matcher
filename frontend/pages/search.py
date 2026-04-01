@@ -52,7 +52,6 @@ if uploaded_jd and st.button("Find top candidates", type="primary"):
             df.columns = ["Rank", "Name", "Location", "Experience (yrs)", "Compatibility"]
             df = df.set_index(keys='Rank', drop=True)
 
-            st.write(df)
 
             # colour compatibility column based on score value
             def colour_score(val):
