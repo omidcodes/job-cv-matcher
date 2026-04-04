@@ -24,12 +24,6 @@ timeout_limit = 10 # Maximum given time to get the file to ollama to extract its
 # and move the document to the chromadb
 
 
-# Create an Persistent client
-# chroma_client = chromadb.PersistentClient(
-#     path='../database',
-#     settings=Settings(allow_reset=True)
-# )
-
 # Create an ephemeral client
 chroma_client = chromadb.Client(
     settings=Settings(allow_reset=True)
@@ -70,20 +64,6 @@ def extract_text_from_single_docx(file_bytes: bytes) -> str:
     docx_file = docx.Document(io.BytesIO(file_bytes))
     return ' '.join([paragraph.text for paragraph in docx_file.paragraphs])
 
-@app.delete('/remove_collection_data')
-async def erase_collection_data():
-
-    try:
-        chroma_client.delete_collection('students_collection')
-        chroma_client.reset()
-        return{
-            'message': 'collection data erased successfully'
-        }
-    except Exception as e:
-        return {
-            'message': 'something went wrong!',
-            'error': str(e)
-        }
 
 @app.post('/upload_cvs')
 async def upload_files(files: list[UploadFile] = File(...)):
@@ -181,58 +161,6 @@ async def upload_files(files: list[UploadFile] = File(...)):
         'failed': failed,
         'details': results
     }
-
-@app.get('/collection_count')
-async def get_collection_count():
-
-    try:
-        collection = chroma_client.get_collection(name='students_collection')
-        record_count = collection.count()
-        if record_count > 0:
-            return {
-                'status': 'success',
-                'collection_count' : record_count
-            }
-        else:
-            return {
-                'status': 'failed',
-                'collection_count': 'Collection is empty'
-            }
-    except Exception as e:
-        return {
-            'status': 'failed',
-            'collection_count': str(e)
-        }
-    
-# @app.get('/list_collections')
-# async def list_collections():
-    try:
-        list_collections = chroma_client.list_collections()
-        return {
-            'status': 'success',
-            'collections': list_collections
-        }
-    except Exception as e:
-        return {
-            'status': 'failed',
-            'reason': str(e)
-        }
-
-
-@app.get('/collection_peek')
-async def peek():
-    try:
-        collection = chroma_client.get_collection('students_collection')
-        data = collection.peek(3)
-        return{
-            'ids': data['ids'],
-            'documents': data['documents'],
-            'metadatas': data['metadatas']
-        }
-    except Exception as e:
-        return{
-            'error': str(e)
-        }
 
 @app.post('/find_candidates')
 async def find_candidates(job_desc: UploadFile = File(...), n_top_applicants: int = Form(...)):
