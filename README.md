@@ -9,9 +9,7 @@ using local LLM inference and vector search. No cloud APIs required.
 
 ## What it does
 
-HR screening is slow. Job CV Matcher automates it.
-
-Upload any number of CVs (PDF or DOCX) and they get parsed, cleaned, chunked, and stored in a vector database — each candidate represented by their actual content, not just keywords. When you upload a job description, the system queries that database and ranks candidates using a **hybrid score** built from three signals: how semantically similar their CV is to the role, how much their skills overlap with what's required, and whether their experience meets the bar.
+Upload any number of CVs (PDF or DOCX) and they get parsed, cleaned, chunked, and stored in a vector database. Each candidate is represented by their actual content, not just keywords. When you upload a job description, the system queries that database and ranks candidates using a **hybrid score** built from three signals: how semantically similar their CV is to the role, how much their skills overlap with what's required, and whether their experience meets the bar.
 
 The result is a clean ranked table with a compatibility percentage for each candidate — colour-coded green, amber, or red.
 
