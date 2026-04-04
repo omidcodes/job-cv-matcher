@@ -1,8 +1,9 @@
 # Job CV Matcher
 
-> Drop a stack of CVs. Upload a job description. Get a ranked shortlist in seconds.
 
-A local, privacy-first candidate screening system that combines **vector search** and **LLM-extracted metadata** to surface the best-matching applicants — no cloud APIs, no data leaving your machine.
+A full-stack Python system with a FastAPI backend, Streamlit frontend, 
+and a multi-container Docker setup that automates candidate screening 
+using local LLM inference and vector search. No cloud APIs required.
 
 ---
 
