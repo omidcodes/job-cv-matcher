@@ -5,3 +5,4 @@ ollama==0.6.1
 pydantic==2.12.5
 pymupdf==1.27.2.2
 python_docx==1.2.0
+python-multipart==0.0.22

@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager
 import pymupdf
 import docx
 import io
+import os
 import time
 import asyncio
 from store_to_db import *
@@ -14,6 +15,9 @@ from rank_candidates import *
 
 
 app = FastAPI()
+
+# setting up ollama so that the container can reach it
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://host.docker.internal:11434")
 
 file_size_limit = 2_000_000 # 2 MB
 timeout_limit = 10 # Maximum given time to get the file to ollama to extract its metadata
@@ -243,8 +247,12 @@ async def find_candidates(job_desc: UploadFile = File(...), n_top_applicants: in
                     job_desc_str = extract_text_from_single_pdf(content)
                     try:
                         collection = chroma_client.get_collection('students_collection')
-                        top_applicants_result = get_top_applicants(collection, job_desc_str, n_top_applicants)
-                        return top_applicants_result
+                        top_applicants_result = await retry_async_function(lambda: get_top_applicants(collection, job_desc_str, n_top_applicants))
+                        # top_applicants_result = get_top_applicants(collection, job_desc_str, n_top_applicants)
+                        return{
+                            'status': 'success',
+                            'result': top_applicants_result
+                        }
                     
                     except Exception as e:
                         return{
@@ -265,10 +273,11 @@ async def find_candidates(job_desc: UploadFile = File(...), n_top_applicants: in
                     job_desc_str = extract_text_from_single_docx(content)
                     try:
                         collection = chroma_client.get_collection('students_collection')
-                        top_applicants = get_top_applicants(collection, job_desc_str, n_top_applicants)
+                        top_applicants_result = await retry_async_function(lambda: get_top_applicants(collection, job_desc_str, n_top_applicants))
+                        # top_applicants = get_top_applicants(collection, job_desc_str, n_top_applicants)
                         return{
                             'status': 'success',
-                            'result': top_applicants
+                            'result': top_applicants_result
                         }
                     except Exception as e:
                         return{

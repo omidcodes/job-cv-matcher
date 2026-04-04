@@ -1,7 +1,8 @@
 from pydantic import BaseModel
 import numpy as np
-from ollama import chat
+from ollama import AsyncClient
 from collections import defaultdict
+
 
 
 multiplier = 15
@@ -21,7 +22,7 @@ def weighted_score(skills_score, experience_score, mean_semantic_dist, weights=N
     return (skills_score + experience_score + semantic_score)
 
 
-def extract_job_desc_metadata(jd: str):
+async def extract_job_desc_metadata(jd: str):
     class JDStructuredContext(BaseModel):
         compnay_name: str
         job_title: str
@@ -29,8 +30,9 @@ def extract_job_desc_metadata(jd: str):
         skills_required: list[str]
         required_experience: float
 
+    from main import OLLAMA_HOST
     
-    response = chat(
+    response = await AsyncClient(host=OLLAMA_HOST).chat(
         model='tinyllama:latest',
         messages=[{'role': 'user', 
                 'content': f'''Extract the following from this CV:
@@ -63,7 +65,7 @@ def extract_job_desc_metadata(jd: str):
 
 
 
-def get_top_applicants(student_collection, jd: str, n_top_applicants=5):
+async def get_top_applicants(student_collection, jd: str, n_top_applicants=5):
  
 
     if student_collection.count() < 1:
@@ -73,7 +75,7 @@ def get_top_applicants(student_collection, jd: str, n_top_applicants=5):
         }
 
     # extract job description's metadata
-    jd_metadata = extract_job_desc_metadata(jd)
+    jd_metadata = await extract_job_desc_metadata(jd)
 
     # limiting the number of results to avoid errors
     limit_results = min(student_collection.count(), n_top_applicants * multiplier)

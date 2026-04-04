@@ -1,7 +1,9 @@
 import streamlit as st
 import requests
+import os
 
-API_URL = "http://localhost:8001"
+
+API_URL = os.getenv("BACKEND_URL", "http://localhost:8001")
 
 
 st.title("Upload CVs")

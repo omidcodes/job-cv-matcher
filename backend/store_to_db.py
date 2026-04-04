@@ -13,8 +13,10 @@ async def extract_student_metadata(CV_str):
         skills: list[str]
         total_experience: float
         job_titles: list[str]
+    
+    from main import OLLAMA_HOST
 
-    response = await AsyncClient().chat(
+    response = await AsyncClient(host=OLLAMA_HOST).chat(
         model='tinyllama:latest',
         messages=[{'role': 'user', 
                 'content': f'''Extract the following from this CV:

@@ -1,8 +1,9 @@
 import streamlit as st
 import requests
 import pandas as pd
+import os
 
-API_URL = "http://localhost:8001"
+API_URL = os.getenv("BACKEND_URL", "http://localhost:8001")
 
 def get_content_type(filename: str) -> str:
     if filename.endswith(".pdf"):
