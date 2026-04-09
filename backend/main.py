@@ -1,14 +1,11 @@
 from fastapi import FastAPI, File, Form, UploadFile, Request, HTTPException
 import chromadb
 from chromadb.config import Settings
-from chromadb import PersistentClient
-from typing import List, Annotated, Union
 from contextlib import asynccontextmanager
 import pymupdf
 import docx
 import io
 import os
-import time
 import asyncio
 from store_to_db import *
 from rank_candidates import *

@@ -43,5 +43,14 @@ cd job-cv-matcher
 docker compose up --build -d
 ```
 
+## One-command setup
+
+On Ubuntu or macOS, you can use the setup script to install Docker and Ollama, pull `tinyllama`, start Ollama, and launch the app with Docker Compose:
+
+```bash
+chmod +x scripts/setup.sh
+./scripts/setup.sh
+```
+
 Open **http://localhost:8501** to start uploading CVs.  
 API docs at **http://localhost:8001/docs**.
