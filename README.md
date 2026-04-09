@@ -52,5 +52,12 @@ chmod +x scripts/setup.sh
 ./scripts/setup.sh
 ```
 
+To stop the project containers, any other running Docker containers, and the local Ollama instance:
+
+```bash
+chmod +x scripts/stop.sh
+./scripts/stop.sh
+```
+
 Open **http://localhost:8501** to start uploading CVs.  
 API docs at **http://localhost:8001/docs**.
