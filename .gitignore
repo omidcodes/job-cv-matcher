@@ -8,6 +8,7 @@ yarn.lock
 .venv
 .env.local
 .env.*.local
+venv
 
 # IDE
 .vscode/

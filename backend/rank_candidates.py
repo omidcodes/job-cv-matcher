@@ -1,3 +1,5 @@
+from typing_extensions import Final
+
 from pydantic import BaseModel
 import numpy as np
 from ollama import AsyncClient
@@ -5,7 +7,7 @@ from collections import defaultdict
 
 
 
-multiplier = 15
+MULTIPLIER : Final[int] = 15
 
 def weighted_score(skills_score, experience_score, mean_semantic_dist, weights=None):
     weights = weights or {
@@ -78,7 +80,7 @@ async def get_top_applicants(student_collection, jd: str, n_top_applicants=5):
     jd_metadata = await extract_job_desc_metadata(jd)
 
     # limiting the number of results to avoid errors
-    limit_results = min(student_collection.count(), n_top_applicants * multiplier)
+    limit_results = min(student_collection.count(), n_top_applicants * MULTIPLIER)
 
     # querying job description which the collection we have to get the similarity 
     # for each
